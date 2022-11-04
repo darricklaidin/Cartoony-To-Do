@@ -9,7 +9,7 @@ class CustomGroup {
     }
 }
 
-class Task {
+export class Task {
     constructor(id, name, description, dueDateString, groupName="Inbox") {
         this.id = id;
         this.name = name;
@@ -23,7 +23,6 @@ class Task {
 export let customGroupsList = [];
 export let tasksList = [new Task(1, "Call Mum", "Make a call to Mum telling her about stuff.", "2022-11-04", "School"), new Task(2, "Buy protein powder", "Buy the 500g Nestle protein powder that's on a discount.", "2022-11-03", "Grocery"), new Task(3, "Drink a glass of water", "Hydration is important!", "2022-11-27"), new Task(4, "Play video games", "Time for some fun!", "2022-11-04")];
 export let activeGroupName = "Inbox";
-export let id = 1;
 
 // Functions --->
 export function toggleCollapse() {
@@ -172,7 +171,10 @@ function buildTaskContents(groupName) {
         
         // If date is before today, add date to 'Overdue' key
         let dueDate = new Date(dueDateString);
-        if (dueDate.getDate() < new Date(Date.now()).getDate()) {
+        dueDate.setHours(0, 0, 0, 0);
+        let today = new Date();
+        today.setHours(0, 0, 0, 0);
+        if (dueDate < today) {
             dueDateString = "Overdue";
         }
         
@@ -204,6 +206,8 @@ function buildTaskContents(groupName) {
         sortedDatesMap.set(key, datesMap.get(key));
     });
     
+    console.log(sortedDatesMap);
+    
     let i = 0;  // counter for task content index (group by dates)
     sortedDatesMap.forEach((value, key) => {
         let dateString = "Overdue";
@@ -226,10 +230,6 @@ function buildTaskContents(groupName) {
         
         buildTasks(i, value);
         i++;
-        
-        let buttonElement = document.createElement("button");  // add to task content
-        buttonElement.textContent = "Add a new task";
-        taskContentElement.appendChild(buttonElement);
     });
 }
 
@@ -331,10 +331,20 @@ export function buildMain(groupName) {
     let mainElement = document.createElement("main");  // add to body
     bodyElement.appendChild(mainElement);
     
-    let currentGroupNameElement = document.createElement("h2");  // add to main
+    let headingElement = document.createElement("div");
+    headingElement.classList.add("heading");
+    mainElement.appendChild(headingElement);
+    
+    let currentGroupNameElement = document.createElement("h2");  // add to heading
     currentGroupNameElement.id = "current-group-name";
     currentGroupNameElement.textContent = groupName;
-    mainElement.appendChild(currentGroupNameElement);
+    headingElement.appendChild(currentGroupNameElement);
+    
+    let addTaskButtonElement = document.createElement("img");  // add to heading
+    addTaskButtonElement.id = "add-task-button";
+    addTaskButtonElement.src = "assets/plus.svg";
+    addTaskButtonElement.alt = "add task button";
+    headingElement.appendChild(addTaskButtonElement);
     
     let taskSectionElement = document.createElement("div");  // add to main
     taskSectionElement.classList.add("task-section");
@@ -421,6 +431,7 @@ export function buildEditTaskModal(task) {
     let taskGroupDropdownButtonElement = document.createElement("button");  // add to task group dropdown wrapper
     taskGroupDropdownButtonElement.type = "button";
     taskGroupDropdownButtonElement.textContent = task.groupName;
+    taskGroupDropdownButtonElement.style.backgroundColor = "#00B4D8";
     customGroupsList.forEach((group) => {
         if (group.name === task.groupName) {
             taskGroupDropdownButtonElement.style.backgroundColor = group.color;
@@ -450,6 +461,90 @@ export function buildEditTaskModal(task) {
     confirmButtonElement.textContent = "Confirm";
     editTaskModalButtonsElement.appendChild(confirmButtonElement);
 }
+
+export function buildAddTaskModal() {
+    let mainElement = document.querySelector("main");
+    
+    let addTaskModalElement = document.createElement("div");  // add to main
+    addTaskModalElement.classList.add("add-task-modal");
+    mainElement.appendChild(addTaskModalElement);
+    
+    let formElement = document.createElement("form");  // add to modal
+    addTaskModalElement.appendChild(formElement);
+    
+    let addTaskModalContentElement = document.createElement("div");  // add to form
+    addTaskModalContentElement.classList.add("add-task-modal-content");
+    formElement.appendChild(addTaskModalContentElement);
+    
+    let taskNameElement = document.createElement("div");  // add to modal content
+    taskNameElement.classList.add("task-name");
+    addTaskModalContentElement.appendChild(taskNameElement);
+    
+    let taskNameInputElement = document.createElement("input");  // add to task name
+    taskNameInputElement.type = "text";
+    taskNameInputElement.id = "task-name";
+    taskNameInputElement.placeholder = "Name";
+    taskNameInputElement.minLength = "1";
+    taskNameInputElement.maxLength = "50";
+    taskNameInputElement.autocomplete = "off";
+    taskNameInputElement.required = true;
+    taskNameElement.appendChild(taskNameInputElement);
+    
+    let taskDescriptionElement = document.createElement("div");  // add to modal content
+    taskDescriptionElement.classList.add("task-description");
+    addTaskModalContentElement.appendChild(taskDescriptionElement);
+    
+    let taskDescriptionInputElement = document.createElement("textarea");  // add to task description
+    taskDescriptionInputElement.id = "task-description";
+    taskDescriptionInputElement.placeholder = "Description";
+    taskDescriptionElement.appendChild(taskDescriptionInputElement);
+    
+    let taskOptionsElement = document.createElement("div");  // add to modal content
+    taskOptionsElement.classList.add("task-options");
+    addTaskModalContentElement.appendChild(taskOptionsElement);
+    
+    let taskDueDateElement = document.createElement("div");  // add to task options
+    taskDueDateElement.classList.add("task-date");
+    taskOptionsElement.appendChild(taskDueDateElement);
+    
+    let taskDueDateInputElement = document.createElement("input");  // add to task due date
+    taskDueDateInputElement.type = "date";
+    taskDueDateInputElement.id = "task-date";
+    taskDueDateInputElement.required = true;
+    taskDueDateElement.appendChild(taskDueDateInputElement);
+    
+    let taskGroupDropdownWrapperElement = document.createElement("div");  // add to task options
+    taskGroupDropdownWrapperElement.classList.add("task-group-dropdown-wrapper");
+    taskOptionsElement.appendChild(taskGroupDropdownWrapperElement);
+    
+    let taskGroupDropdownButtonElement = document.createElement("button");  // add to task group dropdown wrapper
+    taskGroupDropdownButtonElement.type = "button";
+    taskGroupDropdownButtonElement.textContent = "Inbox";
+    taskGroupDropdownButtonElement.style.backgroundColor = "#00B4D8";
+    taskGroupDropdownWrapperElement.appendChild(taskGroupDropdownButtonElement);
+    
+    let taskGroupDropdownElement = document.createElement("div");  // add to task group dropdown wrapper
+    taskGroupDropdownElement.classList.add("task-group-dropdown");
+    taskGroupDropdownWrapperElement.appendChild(taskGroupDropdownElement);
+    
+    buildTaskGroupDropdownItems();
+    
+    let addTaskModalButtonsElement = document.createElement("div");  // add to form
+    addTaskModalButtonsElement.classList.add("add-task-modal-buttons");
+    formElement.appendChild(addTaskModalButtonsElement);
+    
+    let cancelButtonElement = document.createElement("button");  // add to modal buttons
+    cancelButtonElement.classList.add("cancel-button")
+    cancelButtonElement.type = "button";
+    cancelButtonElement.textContent = "Cancel";
+    addTaskModalButtonsElement.appendChild(cancelButtonElement);
+    
+    let confirmButtonElement = document.createElement("button");  // add to modal buttons
+    confirmButtonElement.classList.add("confirm-button")
+    confirmButtonElement.type = "submit";
+    confirmButtonElement.textContent = "Confirm";
+    addTaskModalButtonsElement.appendChild(confirmButtonElement);
+};
 
 // Main --->
 

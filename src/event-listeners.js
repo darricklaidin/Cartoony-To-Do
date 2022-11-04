@@ -1,6 +1,6 @@
 import {    customGroupsList, tasksList, toggleCollapse, addNewGroup, removeGroup, 
             buildMain, activeGroupName, removeMain , removeTask, buildEditTaskModal,
-            disableNav, enableNav } from "./index.js";
+            disableNav, enableNav, buildAddTaskModal, Task } from "./index.js";
 
 export function addEventListeners() {
     
@@ -149,8 +149,6 @@ export function addEventListeners() {
         // Ignore nav elements
         if (event.target.closest("nav")) return;
         
-        // console.log(event.target);
-        
         // Tasks --->
         
         // Remove task
@@ -173,7 +171,16 @@ export function addEventListeners() {
         }
         
         // TODO: Add new task
-        
+        if (event.target.id === "add-task-button") {
+            buildAddTaskModal();
+            
+            let addTaskModalElement = document.querySelector(".add-task-modal");
+            addTaskModalElement.style.display = "flex";
+            
+            // Disable nav elements
+            disableNav();
+        }
+            
         // Modals --->
         
         // Close modal
@@ -181,19 +188,23 @@ export function addEventListeners() {
             enableNav();
             
             // Remove modal
-            let editTaskModalElement = event.target.closest(".edit-task-modal");
-            editTaskModalElement.remove();
+            if (event.target.closest(".edit-task-modal")) {
+                let editTaskModalElement = event.target.closest(".edit-task-modal");
+                editTaskModalElement.remove();
+            }
+            else if (event.target.closest(".add-task-modal")) {
+                let addTaskModalElement = event.target.closest(".add-task-modal");
+                addTaskModalElement.remove();
+            }
         }
         // If click anywhere outside of dropdown, inside of modal, and drop down open
-        else if (event.target.closest(".task-group-dropdown") == null && event.target.closest(".edit-task-modal") != null && document.querySelector(".task-group-dropdown").style.display === "flex") {
+        else if (event.target.closest(".task-group-dropdown") == null && (event.target.closest(".edit-task-modal") != null || event.target.closest(".add-task-modal")) && document.querySelector(".task-group-dropdown").style.display === "flex") {
             // Close dropdown
-            console.log("close")
             let taskGroupdropdownElement = document.querySelector(".task-group-dropdown");
             taskGroupdropdownElement.style.display = "none";
         }
         // Open dropdown on click
         else if (event.target == document.querySelector(".task-group-dropdown-wrapper > button")) {
-            console.log("Open")
             // Show dropdown items
             let taskGroupdropdownElement = document.querySelector(".task-group-dropdown");
             taskGroupdropdownElement.style.display = "flex";
@@ -217,22 +228,46 @@ export function addEventListeners() {
         event.preventDefault();
         
         if (event.target.lastChild.lastChild.classList.contains("confirm-button")) {
-            // Update current task with new values
-            let editTaskModalElement = document.querySelector(".edit-task-modal");
-            let taskIndex = editTaskModalElement.dataset.id - 1;  // offset by 1 because id starts at 1
-            tasksList[taskIndex].name = document.querySelector(".edit-task-modal #task-name").value;
-            tasksList[taskIndex].description = document.querySelector(".edit-task-modal #task-description").value;
-            tasksList[taskIndex].groupName = document.querySelector(".task-group-dropdown-wrapper > button").textContent;
-            tasksList[taskIndex].dueDateString = document.querySelector(".edit-task-modal #task-date").value;
             
-            // Rebuild main element
-            removeMain();
-            buildMain(activeGroupName);
+            if (event.target.closest(".edit-task-modal")) {
+                // Update current task with new values
+                let editTaskModalElement = document.querySelector(".edit-task-modal");
+                let taskIndex = editTaskModalElement.dataset.id - 1;  // offset by 1 because id starts at 1
+                tasksList[taskIndex].name = document.querySelector(".edit-task-modal #task-name").value;
+                tasksList[taskIndex].description = document.querySelector(".edit-task-modal #task-description").value;
+                tasksList[taskIndex].groupName = document.querySelector(".task-group-dropdown-wrapper > button").textContent;
+                tasksList[taskIndex].dueDateString = document.querySelector(".edit-task-modal #task-date").value;
+                
+                // Rebuild main element
+                removeMain();
+                buildMain(activeGroupName);
+                
+                // Close modal
+                editTaskModalElement.remove();
+                
+                enableNav();
+            }
+            else if (event.target.closest(".add-task-modal")) {
+                let addTaskModalElement = document.querySelector(".add-task-modal");
+                let newTask = new Task();
+                newTask.id = tasksList.length + 1;
+                newTask.name = document.querySelector(".add-task-modal #task-name").value;
+                newTask.description = document.querySelector(".add-task-modal #task-description").value;
+                newTask.groupName = document.querySelector(".task-group-dropdown-wrapper > button").textContent;
+                newTask.dueDateString = document.querySelector(".add-task-modal #task-date").value;
+                tasksList.push(newTask);
+                
+                console.log(tasksList);
+                // Rebuild main element
+                removeMain();
+                buildMain(activeGroupName);
+                
+                // Close modal
+                addTaskModalElement.remove();
+                
+                enableNav();
+            }
             
-            // Close modal
-            editTaskModalElement.remove();
-            
-            enableNav();
         }
         
     });
