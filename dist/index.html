@@ -10,89 +10,38 @@
     <script src="main.js" defer></script>
 </head>
 <body>
-    <!-- <main>
-        
-        <h2 id="current-group-name">Inbox</h2>
-        
-        <div class="task-section">
-            
-            <div class="task-content">
-                <h3 class="date-header">Overdue</h3>
-                <div class="tasks">
-                    <div class="task">
-                        <input type="checkbox">
-                        <p>Call mum</p>
+    <!-- <nav><h1>To Do</h1><div class="groups-wrapper"><div class="groups-heading"><p>Groups</p><div class="groups-heading-buttons"><img src="assets/down-arrow.svg" alt="down arrow" id="down-arrow-button"><img src="assets/plus.svg" alt="plus" id="plus-button"></div></div><div class="groups"><div class="group-item active" id="inbox"><p>Inbox</p></div><div class="group-item custom"><input class="custom-group-name" type="text" maxlength="8" spellcheck="false" autocomplete="off"><input type="color" class="color-tag"><img src="assets/trash.svg" alt="trash icon"></div><div class="group-item custom"><input class="custom-group-name" type="text" maxlength="8" spellcheck="false" autocomplete="off"><input type="color" class="color-tag"><img src="assets/trash.svg" alt="trash icon"></div><div class="group-item custom"><input class="custom-group-name" type="text" maxlength="8" spellcheck="false" autocomplete="off"><input type="color" class="color-tag"><img src="assets/trash.svg" alt="trash icon"></div><div class="group-item custom"><input class="custom-group-name" type="text" maxlength="8" spellcheck="false" autocomplete="off"><input type="color" class="color-tag"><img src="assets/trash.svg" alt="trash icon"></div></div></div></nav>
+    
+    <main>
+        <div class="edit-task-modal">
+            <form action="">
+                <div class="edit-task-modal-content">
+                    <div class="task-name">
+                        <input type="text" id="task-name" placeholder="Name" minlength="1" maxlength="50" required autocomplete="off">
                     </div>
-                    <div class="task">
-                        <input type="checkbox">
-                        <p>Buy 5L of orange juice</p>
-                        <div class="group-tag">
-                            <p>Grocery</p>
+                    <div class="task-description">
+                        <textarea id="task-description" placeholder="Description"></textarea>
+                    </div>
+                    <div class="task-options">
+                        <div class="task-date">
+                            <input type="date" id="task-date">
                         </div>
-                    </div>
-                    <div class="task">
-                        <input type="checkbox">
-                        <p>Study for Geography exam</p>
-                        <div class="group-tag">
-                            <p>School</p>
-                        </div>
-                    </div>
-                </div>
-                <button>Add a new task</button>
-            </div>
-            
-            <div class="task-content">
-                <h3 class="date-header">Today - <span>1 November 2022</span></h3>
-                <div class="tasks">
-                    <div class="task">
-                        <input type="checkbox">
-                        <p>Cook a meal</p>
-                    </div>
-                    <div class="task">
-                        <input type="checkbox">
-                        <p>Buy vegetables</p>
-                        <div class="group-tag">
-                            <p>Grocery</p>
-                        </div>
-                    </div>
-                    <div class="task">
-                        <input type="checkbox">
-                        <p>Do history homework</p>
-                        <div class="group-tag">
-                            <p>School</p>
+                        <div class="task-group-dropdown-wrapper">
+                            <button type="button">Grocery</button>
+                            <div class="task-group-dropdown">
+                                <button type="button">Inbox</button>
+                                <button type="button">School</button>
+                                <button type="button">Grocery</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <button>Add a new task</button>
-            </div>
-            
-            <div class="task-content">
-                <h3 class="date-header">2 November 2022</h3>
-                <div class="tasks">
-                    <div class="task">
-                        <input type="checkbox">
-                        <p>Cook a meal</p>
-                    </div>
-                    <div class="task">
-                        <input type="checkbox">
-                        <p>Buy vegetables</p>
-                        <div class="group-tag">
-                            <p>Grocery</p>
-                        </div>
-                    </div>
-                    <div class="task">
-                        <input type="checkbox">
-                        <p>Do history homework</p>
-                        <div class="group-tag">
-                            <p>School</p>
-                        </div>
-                    </div>
+                <div class="edit-task-modal-buttons">
+                    <button class="cancel-button">Cancel</button>
+                    <button class="confirm-button">Confirm</button>
                 </div>
-                <button>Add a new task</button>
-            </div>
-            
+            </form>
         </div>
-        
     </main> -->
 </body>
 </html>

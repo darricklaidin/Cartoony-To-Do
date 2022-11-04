@@ -1,5 +1,6 @@
 import {    customGroupsList, tasksList, toggleCollapse, addNewGroup, removeGroup, 
-            buildMain, activeGroupName, removeMain , removeTask } from "./index.js";
+            buildMain, activeGroupName, removeMain , removeTask, buildEditTaskModal,
+            disableNav, enableNav } from "./index.js";
 
 export function addEventListeners() {
     
@@ -142,16 +143,98 @@ export function addEventListeners() {
     }, true);
     
     
-    // Tasks --->
-    let taskSectionElement = document.querySelector(".task-section");
-    
-    taskSectionElement.addEventListener("click", (event) => {
-        console.log(event.target);
+    let documentElement = document.documentElement;
+    documentElement.addEventListener("click", (event) => {
         
+        // Ignore nav elements
+        if (event.target.closest("nav")) return;
+        
+        // console.log(event.target);
+        
+        // Tasks --->
+        
+        // Remove task
         if (event.target.type === "checkbox") {
             removeTask(event);
         }
         
+        // Open edit task modal
+        if (event.target.type !== "checkbox" && event.target.closest(".task")) {
+            let taskElement = event.target.closest(".task");
+            let taskIndex = taskElement.dataset.id - 1;  // offset by 1 because id starts at 1
+            
+            buildEditTaskModal(tasksList[taskIndex]);
+            
+            let editTaskModalElement = document.querySelector(".edit-task-modal");
+            editTaskModalElement.style.display = "flex";
+            
+            // Disable nav elements
+            disableNav();
+        }
+        
+        // TODO: Add new task
+        
+        // Modals --->
+        
+        // Close modal
+        if (event.target.classList.contains("cancel-button")) {
+            enableNav();
+            
+            // Remove modal
+            let editTaskModalElement = event.target.closest(".edit-task-modal");
+            editTaskModalElement.remove();
+        }
+        // If click anywhere outside of dropdown, inside of modal, and drop down open
+        else if (event.target.closest(".task-group-dropdown") == null && event.target.closest(".edit-task-modal") != null && document.querySelector(".task-group-dropdown").style.display === "flex") {
+            // Close dropdown
+            console.log("close")
+            let taskGroupdropdownElement = document.querySelector(".task-group-dropdown");
+            taskGroupdropdownElement.style.display = "none";
+        }
+        // Open dropdown on click
+        else if (event.target == document.querySelector(".task-group-dropdown-wrapper > button")) {
+            console.log("Open")
+            // Show dropdown items
+            let taskGroupdropdownElement = document.querySelector(".task-group-dropdown");
+            taskGroupdropdownElement.style.display = "flex";
+        }
+        // Dropdown item on click
+        else if (event.target.closest(".task-group-dropdown") && event.target.tagName === "BUTTON") {            
+            // Update dropdown wrapper button text
+            let taskGroupdropdownWrapperElement = document.querySelector(".task-group-dropdown-wrapper");
+            taskGroupdropdownWrapperElement.children[0].textContent = event.target.textContent;
+            // update color
+            taskGroupdropdownWrapperElement.children[0].style.backgroundColor = event.target.style.backgroundColor;
+            
+            // Close dropdown
+            let taskGroupdropdownElement = document.querySelector(".task-group-dropdown");
+            taskGroupdropdownElement.style.display = "none";
+        }
         
     });
+    
+    documentElement.addEventListener("submit", (event) => {
+        event.preventDefault();
+        
+        if (event.target.lastChild.lastChild.classList.contains("confirm-button")) {
+            // Update current task with new values
+            let editTaskModalElement = document.querySelector(".edit-task-modal");
+            let taskIndex = editTaskModalElement.dataset.id - 1;  // offset by 1 because id starts at 1
+            tasksList[taskIndex].name = document.querySelector(".edit-task-modal #task-name").value;
+            tasksList[taskIndex].description = document.querySelector(".edit-task-modal #task-description").value;
+            tasksList[taskIndex].groupName = document.querySelector(".task-group-dropdown-wrapper > button").textContent;
+            tasksList[taskIndex].dueDateString = document.querySelector(".edit-task-modal #task-date").value;
+            
+            // Rebuild main element
+            removeMain();
+            buildMain(activeGroupName);
+            
+            // Close modal
+            editTaskModalElement.remove();
+            
+            enableNav();
+        }
+        
+    });
+    
 }
