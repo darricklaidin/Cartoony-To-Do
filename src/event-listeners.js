@@ -1,4 +1,4 @@
-import { customGroupsList, tasksList, toggleCollapse, addNewGroup, removeGroup } from "./index.js";
+import { customGroupsList, tasksList, toggleCollapse, addNewGroup, removeGroup, buildMain, activeGroupName } from "./index.js";
 
 export function addEventListeners() {
     let groupsWrapperElement = document.querySelector(".groups-wrapper");
@@ -7,7 +7,6 @@ export function addEventListeners() {
     let currentInputValue = "";
     
     // TODO: Click on group to filter tasks by it
-        // TODO: Add active class to 'Inbox' group
     
     
     groupsWrapperElement.addEventListener("click", (event) => {
@@ -30,6 +29,15 @@ export function addEventListeners() {
             
             // Remove the group
             removeGroup(customGroupIndex);
+            
+            // Remove main element if exists
+            let mainElement = document.querySelector("main");
+            if (mainElement != undefined) {
+                mainElement.remove();
+            }
+            
+            // Rebuild main element with active group name
+            buildMain(activeGroupName);
         }
         
     });
@@ -43,7 +51,14 @@ export function addEventListeners() {
             let groupElementIndex = Array.from(groupsElement.children).indexOf(groupElement) - 1;  // offset by 1 to ignore 'Inbox'
             customGroupsList[groupElementIndex].color = event.target.value;
             
-            console.log(customGroupsList);
+            // Remove main element if exists
+            let mainElement = document.querySelector("main");
+            if (mainElement != undefined) {
+                mainElement.remove();
+            }
+            
+            // Rebuild main element with active group name
+            buildMain(activeGroupName);
         }
         
     }, true);
@@ -87,6 +102,22 @@ export function addEventListeners() {
             let groupsElement = document.querySelector(".groups");
             let groupElementIndex = Array.from(groupsElement.children).indexOf(groupElement) - 1;  // offset by 1 to ignore 'Inbox'
             customGroupsList[groupElementIndex].name = inputValue;
+            
+            // Update all tasks with this group name to the updated group name
+            tasksList.forEach((task) => {
+                if (task.groupName === currentInputValue) {
+                    task.groupName = inputValue;
+                } 
+            });
+            
+            // Remove main element if exists
+            let mainElement = document.querySelector("main");
+            if (mainElement != undefined) {
+                mainElement.remove();
+            }
+            
+            // Rebuild main element with active group name
+            buildMain(activeGroupName);
         }
         
     }, true);
