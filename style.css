@@ -18,6 +18,10 @@ body {
     display: flex;
 }
 
+button {
+    cursor: pointer;
+}
+
 /* Nav bar */
 
 nav {
@@ -161,6 +165,10 @@ nav img:hover {
 /* Tasks */
 
 main {
+    position: relative;
+    
+    flex: 1;
+    
     display: flex;
     flex-direction: column;
     gap: 40px 30px;
@@ -169,7 +177,6 @@ main {
     
     padding: 20px;
     
-    border: 1px solid purple;
 }
 
 main h2 {
@@ -186,8 +193,6 @@ main h2 {
 }
 
 .task-content {
-    /* border: 1px solid lightgreen; */
-    
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -205,11 +210,9 @@ main h2 {
     
     width: 200px;
     
-    cursor: pointer;
 }
 
 .tasks {
-    /* border: 1px solid coral; */
     display: flex;
     flex-direction: column;
     
@@ -221,7 +224,6 @@ main h2 {
     display: flex;
     gap: 25px;
     
-    /* border: 1px solid blue; */
     padding: 10px;
     
     cursor: pointer;
@@ -239,3 +241,128 @@ main h2 {
     border-radius: 5px;
 }
 
+/* Edit Task Modal */
+
+.edit-task-modal {
+    display: none;
+    flex: 1;
+    
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+    /* display: flex; */
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.edit-task-modal * {
+    font-family: "Jua", sans-serif;
+    font-size: 1.2rem;
+    
+}
+
+.edit-task-modal form {
+    background-color: white;
+    
+    border-radius: 20px;
+    
+    padding: 25px;
+    
+    width: 60%;
+    
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+.edit-task-modal-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.task-name input, .task-description textarea {
+    border: none;
+    border-radius: 5px;
+    outline: none;
+    
+    padding: 10px;
+}
+
+.task-name input {
+    width: 100%;    
+}
+
+.task-name input:hover {
+    background-color: lightgray;
+}
+
+.task-name input:focus {
+    background-color: lightgray;
+}
+
+.task-description {
+    height: 200px;
+}
+
+.task-description textarea {
+    background-color: #CAF0F8;
+    resize: none;
+    
+    width: 100%;
+    height: 100%;
+}
+
+.task-options {
+    display: flex;
+    gap: 50px;
+    
+    margin-top: 10px;
+}
+
+.task-group-dropdown-wrapper {
+    position: relative;
+}
+
+.task-group-dropdown-wrapper > button {
+    width: 150px;
+}
+
+.task-group-dropdown {
+    display: none;
+    
+    position: absolute;
+    bottom: 150%;
+    
+    width: 100%;
+    max-height: 250px;
+    
+    overflow-y: auto;
+    
+    background-color: #0076b6;
+    padding: 10px;
+    
+    /* display: flex; */
+    flex-direction: column;
+    gap: 5px;
+}
+
+.task-group-dropdown button {
+    width: 100%;
+}
+
+.task-group-dropdown button:hover {
+    transform: scale(1.1);
+}
+
+.edit-task-modal-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+}
