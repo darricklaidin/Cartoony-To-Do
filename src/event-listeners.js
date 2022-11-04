@@ -78,6 +78,8 @@ export function addEventListeners() {
             
             // Rebuild main element with active group name
             buildMain(activeGroupName);
+            
+            localStorage.setItem("customGroupsList", JSON.stringify(customGroupsList));
         }
         
     }, true);
@@ -138,6 +140,9 @@ export function addEventListeners() {
             
             // Rebuild main element with active group name
             buildMain(activeGroupName);
+            
+            localStorage.setItem("customGroupsList", JSON.stringify(customGroupsList));
+            localStorage.setItem("tasksList", JSON.stringify(tasksList));
         }
         
     }, true);
@@ -170,7 +175,7 @@ export function addEventListeners() {
             disableNav();
         }
         
-        // TODO: Add new task
+        // Add new task
         if (event.target.id === "add-task-button") {
             buildAddTaskModal();
             
@@ -237,7 +242,7 @@ export function addEventListeners() {
                 tasksList[taskIndex].description = document.querySelector(".edit-task-modal #task-description").value;
                 tasksList[taskIndex].groupName = document.querySelector(".task-group-dropdown-wrapper > button").textContent;
                 tasksList[taskIndex].dueDateString = document.querySelector(".edit-task-modal #task-date").value;
-                
+    
                 // Rebuild main element
                 removeMain();
                 buildMain(activeGroupName);
@@ -246,6 +251,8 @@ export function addEventListeners() {
                 editTaskModalElement.remove();
                 
                 enableNav();
+                
+                localStorage.setItem("tasksList", JSON.stringify(tasksList));
             }
             else if (event.target.closest(".add-task-modal")) {
                 let addTaskModalElement = document.querySelector(".add-task-modal");
@@ -265,6 +272,8 @@ export function addEventListeners() {
                 addTaskModalElement.remove();
                 
                 enableNav();
+                
+                localStorage.setItem("tasksList", JSON.stringify(tasksList));
             }
             
         }
