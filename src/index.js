@@ -2,7 +2,7 @@
 import { addEventListeners } from "./event-listeners.js";
 
 // Classes --->
-export class CustomGroup {
+class CustomGroup {
     constructor(name, color) {
         this.name = name;
         this.color = color;
@@ -24,98 +24,6 @@ export let tasksList = [new Task("Call Mum", "Make a call to Mum telling her abo
 export let activeGroupName = "Inbox";
 
 // Functions --->
-export function buildCustomGroupItem(customGroupItem) {  
-    let groupsElement = document.querySelector(".groups");
-    
-    let customGroupItemElement = document.createElement("div");  // add to groups
-    customGroupItemElement.classList.add("group-item");
-    customGroupItemElement.classList.add("custom");
-    groupsElement.appendChild(customGroupItemElement);
-    
-    let customGroupItemInputElement = document.createElement("input");  // add to custom group item
-    customGroupItemInputElement.classList.add("custom-group-name");
-    customGroupItemInputElement.type = "text";
-    customGroupItemInputElement.value = customGroupItem.name;
-    customGroupItemInputElement.maxLength = "8";
-    customGroupItemInputElement.spellcheck = false;
-    customGroupItemInputElement.autocomplete = "off";
-    customGroupItemElement.appendChild(customGroupItemInputElement);
-    
-    let customGroupItemColorTagElement = document.createElement("input");  // add to custom group item
-    customGroupItemColorTagElement.type = "color";
-    customGroupItemColorTagElement.classList.add("color-tag");
-    customGroupItemColorTagElement.value = customGroupItem.color;
-    customGroupItemElement.appendChild(customGroupItemColorTagElement);
-    
-    let trashButtonElement = document.createElement("img");  // add to custom group item
-    trashButtonElement.src = "assets/trash.svg";
-    trashButtonElement.alt = "trash icon";
-    customGroupItemElement.appendChild(trashButtonElement);
-}
-
-function buildNavBar() {
-    let bodyElement = document.querySelector("body");
-    
-    let navElement = document.createElement("nav");  // add to body
-    bodyElement.appendChild(navElement);
-    
-    let titleElement = document.createElement("h1");  // add to nav
-    titleElement.textContent = "To Do";
-    navElement.appendChild(titleElement);
-    
-    let groupsWrapperElement = document.createElement("div");  // add to nav
-    groupsWrapperElement.classList.add("groups-wrapper");
-    navElement.appendChild(groupsWrapperElement);
-    
-    let groupsHeadingElement = document.createElement("div");  // add to groups wrapper
-    groupsHeadingElement.classList.add("groups-heading");
-    groupsWrapperElement.appendChild(groupsHeadingElement);
-    
-    let groupsHeadingParagraphElement = document.createElement("p");  // add to groups heading
-    groupsHeadingParagraphElement.textContent = "Groups";
-    groupsHeadingElement.appendChild(groupsHeadingParagraphElement);
-    
-    let groupsHeadingButtonsElement = document.createElement("div");  // add to groups heading
-    groupsHeadingButtonsElement.classList.add("groups-heading-buttons");
-    groupsHeadingElement.appendChild(groupsHeadingButtonsElement);
-    
-    let downArrowButtonElement = document.createElement("img");  // add to groups heading buttons
-    downArrowButtonElement.src = "assets/down-arrow.svg";
-    downArrowButtonElement.alt = "down arrow";
-    downArrowButtonElement.id = "down-arrow-button";
-    downArrowButtonElement.classList.add("collapsed");
-    groupsHeadingButtonsElement.appendChild(downArrowButtonElement);
-    
-    let plusButtonElement = document.createElement("img");  // add to groups heading buttons
-    plusButtonElement.src = "assets/plus.svg";
-    plusButtonElement.alt = "plus";
-    plusButtonElement.id = "plus-button";
-    groupsHeadingButtonsElement.appendChild(plusButtonElement);
-    
-    let groupsElement = document.createElement("div");  // add to groups wrapper
-    groupsElement.classList.add("groups");
-    groupsElement.classList.add("collapsed");
-    groupsWrapperElement.appendChild(groupsElement);
-    
-    let groupItemInboxElement = document.createElement("div");  // add to groups
-    groupItemInboxElement.classList.add("group-item");
-    groupItemInboxElement.id = "inbox";
-    groupsElement.appendChild(groupItemInboxElement);
-    
-    let groupItemInboxParagraphElement = document.createElement("p");  // add to group item inbox
-    groupItemInboxParagraphElement.textContent = "Inbox";
-    groupItemInboxElement.appendChild(groupItemInboxParagraphElement);
-    
-    customGroupsList.push(new CustomGroup("School", "#FF0000"));
-    customGroupsList.push(new CustomGroup("Grocery", "#00FF00"));
-    customGroupsList.push(new CustomGroup("Hospital", "#0000FF"));
-    customGroupsList.push(new CustomGroup("Games", "#FFFF00"));
-    
-    customGroupsList.forEach((group) => {
-        buildCustomGroupItem(group);
-    });
-}
-
 export function toggleCollapse() {
     let downArrowButtonElement = document.querySelector("#down-arrow-button");
     let groupsElement = document.querySelector(".groups");
@@ -163,6 +71,13 @@ export function removeGroup(customGroupIndex) {
     groupsElement.removeChild(groupsElement.children[customGroupIndex + 1]);  // to ignore the 'Inbox' group which is default
     // Remove from customGroupsList
     customGroupsList.splice(customGroupIndex, 1);
+}
+
+export function removeMain() {
+    let mainElement = document.querySelector("main");
+    if (mainElement != undefined) {
+        mainElement.remove();
+    }
 }
 
 function buildTasks(taskContentElementIndex, tasks) {
@@ -269,6 +184,98 @@ function buildTaskContents(groupName) {
     });
 }
 
+function buildCustomGroupItem(customGroupItem) {  
+    let groupsElement = document.querySelector(".groups");
+    
+    let customGroupItemElement = document.createElement("div");  // add to groups
+    customGroupItemElement.classList.add("group-item");
+    customGroupItemElement.classList.add("custom");
+    groupsElement.appendChild(customGroupItemElement);
+    
+    let customGroupItemInputElement = document.createElement("input");  // add to custom group item
+    customGroupItemInputElement.classList.add("custom-group-name");
+    customGroupItemInputElement.type = "text";
+    customGroupItemInputElement.value = customGroupItem.name;
+    customGroupItemInputElement.maxLength = "8";
+    customGroupItemInputElement.spellcheck = false;
+    customGroupItemInputElement.autocomplete = "off";
+    customGroupItemElement.appendChild(customGroupItemInputElement);
+    
+    let customGroupItemColorTagElement = document.createElement("input");  // add to custom group item
+    customGroupItemColorTagElement.type = "color";
+    customGroupItemColorTagElement.classList.add("color-tag");
+    customGroupItemColorTagElement.value = customGroupItem.color;
+    customGroupItemElement.appendChild(customGroupItemColorTagElement);
+    
+    let trashButtonElement = document.createElement("img");  // add to custom group item
+    trashButtonElement.src = "assets/trash.svg";
+    trashButtonElement.alt = "trash icon";
+    customGroupItemElement.appendChild(trashButtonElement);
+}
+
+function buildNavBar() {
+    let bodyElement = document.querySelector("body");
+    
+    let navElement = document.createElement("nav");  // add to body
+    bodyElement.appendChild(navElement);
+    
+    let titleElement = document.createElement("h1");  // add to nav
+    titleElement.textContent = "To Do";
+    navElement.appendChild(titleElement);
+    
+    let groupsWrapperElement = document.createElement("div");  // add to nav
+    groupsWrapperElement.classList.add("groups-wrapper");
+    navElement.appendChild(groupsWrapperElement);
+    
+    let groupsHeadingElement = document.createElement("div");  // add to groups wrapper
+    groupsHeadingElement.classList.add("groups-heading");
+    groupsWrapperElement.appendChild(groupsHeadingElement);
+    
+    let groupsHeadingParagraphElement = document.createElement("p");  // add to groups heading
+    groupsHeadingParagraphElement.textContent = "Groups";
+    groupsHeadingElement.appendChild(groupsHeadingParagraphElement);
+    
+    let groupsHeadingButtonsElement = document.createElement("div");  // add to groups heading
+    groupsHeadingButtonsElement.classList.add("groups-heading-buttons");
+    groupsHeadingElement.appendChild(groupsHeadingButtonsElement);
+    
+    let downArrowButtonElement = document.createElement("img");  // add to groups heading buttons
+    downArrowButtonElement.src = "assets/down-arrow.svg";
+    downArrowButtonElement.alt = "down arrow";
+    downArrowButtonElement.id = "down-arrow-button";
+    // downArrowButtonElement.classList.add("collapsed");
+    groupsHeadingButtonsElement.appendChild(downArrowButtonElement);
+    
+    let plusButtonElement = document.createElement("img");  // add to groups heading buttons
+    plusButtonElement.src = "assets/plus.svg";
+    plusButtonElement.alt = "plus";
+    plusButtonElement.id = "plus-button";
+    groupsHeadingButtonsElement.appendChild(plusButtonElement);
+    
+    let groupsElement = document.createElement("div");  // add to groups wrapper
+    groupsElement.classList.add("groups");
+    // groupsElement.classList.add("collapsed");
+    groupsWrapperElement.appendChild(groupsElement);
+    
+    let groupItemInboxElement = document.createElement("div");  // add to groups
+    groupItemInboxElement.classList.add("group-item");
+    groupItemInboxElement.id = "inbox";
+    groupsElement.appendChild(groupItemInboxElement);
+    
+    let groupItemInboxParagraphElement = document.createElement("p");  // add to group item inbox
+    groupItemInboxParagraphElement.textContent = "Inbox";
+    groupItemInboxElement.appendChild(groupItemInboxParagraphElement);
+    
+    customGroupsList.push(new CustomGroup("School", "#FF0000"));
+    customGroupsList.push(new CustomGroup("Grocery", "#00FF00"));
+    customGroupsList.push(new CustomGroup("Hospital", "#0000FF"));
+    customGroupsList.push(new CustomGroup("Games", "#FFFF00"));
+    
+    customGroupsList.forEach((group) => {
+        buildCustomGroupItem(group);
+    });
+}
+
 export function buildMain(groupName) {
     let bodyElement = document.querySelector("body");
     
@@ -289,6 +296,8 @@ export function buildMain(groupName) {
 
 // Main --->
 buildNavBar();
-buildMain("Inbox");  // Default group
+
+document.querySelector("#inbox").classList.add("active");  // Set "Inbox" as default active group
+buildMain(activeGroupName);  
 
 addEventListeners();

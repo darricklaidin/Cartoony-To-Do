@@ -1,14 +1,11 @@
-import { customGroupsList, tasksList, toggleCollapse, addNewGroup, removeGroup, buildMain, activeGroupName } from "./index.js";
+import { customGroupsList, tasksList, toggleCollapse, addNewGroup, removeGroup, buildMain, activeGroupName, removeMain } from "./index.js";
 
 export function addEventListeners() {
     let groupsWrapperElement = document.querySelector(".groups-wrapper");
     let groupsElement = document.querySelector(".groups");
     
     let currentInputValue = "";
-    
-    // TODO: Click on group to filter tasks by it
-    
-    
+      
     groupsWrapperElement.addEventListener("click", (event) => {
         
         // Expand/collapse groups
@@ -27,19 +24,40 @@ export function addEventListeners() {
             let customGroups = Array.from(groupsElement.children).slice(1);
             let customGroupIndex = customGroups.indexOf(event.target.parentElement);
             
+            // Set "Inbox" group as active if the group that was deleted was the group being displayed
+            if (event.target.parentElement.children[0].value === activeGroupName) {
+                let groupItemInboxElement = document.querySelector("#inbox");
+                groupItemInboxElement.classList.add("active");
+                activeGroupName = "Inbox";
+            }
+            
             // Remove the group
             removeGroup(customGroupIndex);
             
             // Remove main element if exists
-            let mainElement = document.querySelector("main");
-            if (mainElement != undefined) {
-                mainElement.remove();
-            }
-            
+            removeMain();
+        
             // Rebuild main element with active group name
             buildMain(activeGroupName);
         }
         
+        if (event.target.classList.contains("group-item")) {
+            // Remove active from other group elements
+            Array.from(event.target.parentElement.children).forEach((child) => {
+                child.classList.remove("active");
+            });
+            
+            // Set group element as active
+            event.target.classList.add("active");
+            // Update active group name global variable
+            activeGroupName = event.target.children[0].value == undefined ? "Inbox" : event.target.children[0].value;
+            
+            // Remove main element if exists
+            removeMain();
+            
+            // Rebuild main element with active group name
+            buildMain(activeGroupName);
+        }
     });
     
     groupsWrapperElement.addEventListener("change", (event) => {
@@ -52,10 +70,7 @@ export function addEventListeners() {
             customGroupsList[groupElementIndex].color = event.target.value;
             
             // Remove main element if exists
-            let mainElement = document.querySelector("main");
-            if (mainElement != undefined) {
-                mainElement.remove();
-            }
+            removeMain();
             
             // Rebuild main element with active group name
             buildMain(activeGroupName);
@@ -111,10 +126,11 @@ export function addEventListeners() {
             });
             
             // Remove main element if exists
-            let mainElement = document.querySelector("main");
-            if (mainElement != undefined) {
-                mainElement.remove();
-            }
+            removeMain();
+            
+            // Determine active group by DOM
+            let activeGroupElement = document.querySelector(".group-item.active");
+            activeGroupName = activeGroupElement.children[0].value == undefined ? "Inbox" : activeGroupElement.children[0].value;
             
             // Rebuild main element with active group name
             buildMain(activeGroupName);
