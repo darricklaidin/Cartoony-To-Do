@@ -21,7 +21,9 @@ export class Task {
 
 // Global variables --->
 export let customGroupsList = [];
-export let tasksList = [new Task(1, "Call Mum", "Make a call to Mum telling her about stuff.", "2022-11-04", "School"), new Task(2, "Buy protein powder", "Buy the 500g Nestle protein powder that's on a discount.", "2022-11-03", "Grocery"), new Task(3, "Drink a glass of water", "Hydration is important!", "2022-11-27"), new Task(4, "Play video games", "Time for some fun!", "2022-11-04")];
+// export let tasksList = [new Task(1, "Call Mum", "Make a call to Mum telling her about stuff.", "2022-11-04", "School"), new Task(2, "Buy protein powder", "Buy the 500g Nestle protein powder that's on a discount.", "2022-11-03", "Grocery"), new Task(3, "Drink a glass of water", "Hydration is important!", "2022-11-27"), new Task(4, "Play video games", "Time for some fun!", "2022-11-04")];
+
+export let tasksList = [];
 export let activeGroupName = "Inbox";
 
 // Functions --->
@@ -206,8 +208,6 @@ function buildTaskContents(groupName) {
         sortedDatesMap.set(key, datesMap.get(key));
     });
     
-    console.log(sortedDatesMap);
-    
     let i = 0;  // counter for task content index (group by dates)
     sortedDatesMap.forEach((value, key) => {
         let dateString = "Overdue";
@@ -315,10 +315,10 @@ function buildNavBar() {
     groupItemInboxParagraphElement.textContent = "Inbox";
     groupItemInboxElement.appendChild(groupItemInboxParagraphElement);
     
-    customGroupsList.push(new CustomGroup("School", "#FF0000"));
-    customGroupsList.push(new CustomGroup("Grocery", "#00FF00"));
-    customGroupsList.push(new CustomGroup("Hospital", "#0000FF"));
-    customGroupsList.push(new CustomGroup("Games", "#FFFF00"));
+    // customGroupsList.push(new CustomGroup("School", "#FF0000"));
+    // customGroupsList.push(new CustomGroup("Grocery", "#00FF00"));
+    // customGroupsList.push(new CustomGroup("Hospital", "#0000FF"));
+    // customGroupsList.push(new CustomGroup("Games", "#FFFF00"));
     
     customGroupsList.forEach((group) => {
         buildCustomGroupItem(group);

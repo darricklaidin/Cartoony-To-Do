@@ -257,7 +257,6 @@ export function addEventListeners() {
                 newTask.dueDateString = document.querySelector(".add-task-modal #task-date").value;
                 tasksList.push(newTask);
                 
-                console.log(tasksList);
                 // Rebuild main element
                 removeMain();
                 buildMain(activeGroupName);
