@@ -1,8 +1,10 @@
-import { customGroupsList, tasksList, toggleCollapse, addNewGroup, removeGroup, buildMain, activeGroupName, removeMain } from "./index.js";
+import {    customGroupsList, tasksList, toggleCollapse, addNewGroup, removeGroup, 
+            buildMain, activeGroupName, removeMain , removeTask } from "./index.js";
 
 export function addEventListeners() {
+    
+    // Groups --->
     let groupsWrapperElement = document.querySelector(".groups-wrapper");
-    let groupsElement = document.querySelector(".groups");
     
     let currentInputValue = "";
       
@@ -21,6 +23,7 @@ export function addEventListeners() {
         // Remove a group
         if (event.target.tagName === "IMG" && event.target.closest(".group-item")) {
             // Get the index of the group in the array
+            let groupsElement = document.querySelector(".groups");
             let customGroups = Array.from(groupsElement.children).slice(1);
             let customGroupIndex = customGroups.indexOf(event.target.parentElement);
             
@@ -139,4 +142,16 @@ export function addEventListeners() {
     }, true);
     
     
+    // Tasks --->
+    let taskSectionElement = document.querySelector(".task-section");
+    
+    taskSectionElement.addEventListener("click", (event) => {
+        console.log(event.target);
+        
+        if (event.target.type === "checkbox") {
+            removeTask(event);
+        }
+        
+        
+    });
 }

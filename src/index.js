@@ -10,7 +10,8 @@ class CustomGroup {
 }
 
 class Task {
-    constructor(name, description, dueDateString, groupName="Inbox") {
+    constructor(id, name, description, dueDateString, groupName="Inbox") {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.dueDateString = dueDateString;
@@ -20,8 +21,9 @@ class Task {
 
 // Global variables --->
 export let customGroupsList = [];
-export let tasksList = [new Task("Call Mum", "Make a call to Mum telling her about stuff.", "2022-11-03", "School"), new Task("Buy protein powder", "Buy the 500g Nestle protein powder that's on a discount.", "2022-11-04", "Grocery"), new Task("Drink a glass of water", "Hydration is important!", "2022-11-27"), new Task("Play video games", "Time for some fun!", "2022-11-04")];
+export let tasksList = [new Task(1, "Call Mum", "Make a call to Mum telling her about stuff.", "2022-11-03", "School"), new Task(2, "Buy protein powder", "Buy the 500g Nestle protein powder that's on a discount.", "2022-11-04", "Grocery"), new Task(3, "Drink a glass of water", "Hydration is important!", "2022-11-27"), new Task(4, "Play video games", "Time for some fun!", "2022-11-04")];
 export let activeGroupName = "Inbox";
+export let id = 1;
 
 // Functions --->
 export function toggleCollapse() {
@@ -80,6 +82,23 @@ export function removeMain() {
     }
 }
 
+export function removeTask(event) {
+    // Delete completed task from tasks list
+    let taskElement = event.target.parentElement;
+    // Get dataset id from DOM
+    let taskElementId = taskElement.dataset.id;
+    // Find task in tasks list and remove it
+    tasksList.forEach((task) => {
+        if (String(task.id) === String(taskElementId)) {
+            let taskIndex = tasksList.indexOf(task);
+            tasksList.splice(taskIndex, 1);
+        }
+    });
+    
+    // Delete completed task from DOM
+    event.target.parentElement.remove();
+}
+
 function buildTasks(taskContentElementIndex, tasks) {
     let taskContentElements = document.querySelectorAll(".task-content");
     let taskContentElement = taskContentElements[taskContentElementIndex];
@@ -91,6 +110,8 @@ function buildTasks(taskContentElementIndex, tasks) {
     tasks.forEach((task) => {
         let taskElement = document.createElement("div");  // add to tasks
         taskElement.classList.add("task");
+        // Add id as data attribute
+        taskElement.dataset.id = task.id;
         tasksElement.appendChild(taskElement);
         
         let taskInputCheckBoxElement = document.createElement("input")  // add to task
