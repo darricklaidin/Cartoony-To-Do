@@ -21,7 +21,7 @@ class Task {
 // Global variables --->
 export let customGroupsList = [];
 export let tasksList = [new Task("Call Mum", "Make a call to Mum telling her about stuff.", "2022-11-03", "School"), new Task("Buy protein powder", "Buy the 500g Nestle protein powder that's on a discount.", "2022-11-04", "Grocery"), new Task("Drink a glass of water", "Hydration is important!", "2022-11-27"), new Task("Play video games", "Time for some fun!", "2022-11-04")];
-let activeGroup = "Inbox";
+export let activeGroupName = "Inbox";
 
 // Functions --->
 export function buildCustomGroupItem(customGroupItem) {  
@@ -165,8 +165,45 @@ export function removeGroup(customGroupIndex) {
     customGroupsList.splice(customGroupIndex, 1);
 }
 
-function buildTasks(tasks) {
-    // TODO
+function buildTasks(taskContentElementIndex, tasks) {
+    let taskContentElements = document.querySelectorAll(".task-content");
+    let taskContentElement = taskContentElements[taskContentElementIndex];
+    
+    let tasksElement = document.createElement("div");  // add to task content
+    tasksElement.classList.add("tasks");
+    taskContentElement.appendChild(tasksElement);
+    
+    tasks.forEach((task) => {
+        let taskElement = document.createElement("div");  // add to tasks
+        taskElement.classList.add("task");
+        tasksElement.appendChild(taskElement);
+        
+        let taskInputCheckBoxElement = document.createElement("input")  // add to task
+        taskInputCheckBoxElement.type = "checkbox";
+        taskElement.appendChild(taskInputCheckBoxElement);
+        
+        let taskParagraphElement = document.createElement("p");  // add to task
+        taskParagraphElement.textContent = task.name;
+        taskElement.appendChild(taskParagraphElement);
+        
+        // If task has a custom group, add it as a tag beside the task name
+        if (task.groupName !== "Inbox") {
+            let taskGroupTagElement = document.createElement("div");  // add to task
+            taskGroupTagElement.classList.add("group-tag");
+            // Set tag color
+            customGroupsList.forEach((customGroup) => {
+                if (customGroup.name === task.groupName) {
+                    taskGroupTagElement.style.backgroundColor = customGroup.color;
+                    return;
+                }
+            });
+            taskElement.appendChild(taskGroupTagElement);
+            
+            let taskGroupTagParagraphElement = document.createElement("p");  // add to group tag
+            taskGroupTagParagraphElement.textContent = task.groupName;
+            taskGroupTagElement.appendChild(taskGroupTagParagraphElement);
+        }
+    })
 }
 
 function buildTaskContents(groupName) {
@@ -203,6 +240,7 @@ function buildTaskContents(groupName) {
     
     console.log("Dates Map:", datesMap);
     
+    let i = 0;
     datesMap.forEach((value, key) => {
         let dateString = "Overdue";
         if (key !== "Overdue") {
@@ -222,7 +260,8 @@ function buildTaskContents(groupName) {
         dateHeaderElement.textContent = dateString;
         taskContentElement.appendChild(dateHeaderElement);
         
-        buildTasks(value);
+        buildTasks(i, value);
+        i++;
         
         let buttonElement = document.createElement("button");  // add to task content
         buttonElement.textContent = "Add a new task";
@@ -230,7 +269,7 @@ function buildTaskContents(groupName) {
     });
 }
 
-function buildMain(groupName) {
+export function buildMain(groupName) {
     let bodyElement = document.querySelector("body");
     
     let mainElement = document.createElement("main");  // add to body
@@ -239,6 +278,7 @@ function buildMain(groupName) {
     let currentGroupNameElement = document.createElement("h2");  // add to main
     currentGroupNameElement.id = "current-group-name";
     currentGroupNameElement.textContent = groupName;
+    mainElement.appendChild(currentGroupNameElement);
     
     let taskSectionElement = document.createElement("div");  // add to main
     taskSectionElement.classList.add("task-section");
@@ -249,6 +289,6 @@ function buildMain(groupName) {
 
 // Main --->
 buildNavBar();
-buildMain("Inbox");
+buildMain("Inbox");  // Default group
 
 addEventListeners();
