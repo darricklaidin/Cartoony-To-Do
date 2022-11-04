@@ -4,7 +4,11 @@ export function addEventListeners() {
     let groupsWrapperElement = document.querySelector(".groups-wrapper");
     let groupsElement = document.querySelector(".groups");
     
-    let currentValue = "";
+    let currentInputValue = "";
+    
+    // TODO: Click on group to filter tasks by it
+        // TODO: Add active class to 'Inbox' group
+    
     
     groupsWrapperElement.addEventListener("click", (event) => {
         
@@ -49,7 +53,7 @@ export function addEventListeners() {
         // On focus of input text
         if (event.target.classList.contains("custom-group-name")) {
             // Save the current value of the input
-            currentValue = event.target.value;
+            currentInputValue = event.target.value;
         }
         
     }, true);
@@ -61,19 +65,19 @@ export function addEventListeners() {
             let inputValue = event.target.value;
           
             // If the input value has not changed
-            if (inputValue === currentValue) return;
+            if (inputValue === currentInputValue) return;
             
             // Check if input is empty
             if (inputValue === "") {
                 // if empty, set to current value
-                event.target.value = currentValue;
+                event.target.value = currentInputValue;
                 return;
             }
             
             // Check if input is the same as another group
             for (let i = 0; i < customGroupsList.length; i++) {
                 if (customGroupsList[i].name === inputValue) {
-                    event.target.value = currentValue;
+                    event.target.value = currentInputValue;
                     return;
                 }
             }
@@ -86,8 +90,6 @@ export function addEventListeners() {
         }
         
     }, true);
-    
-    
     
     
 }

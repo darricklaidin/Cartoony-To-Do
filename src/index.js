@@ -20,7 +20,8 @@ class Task {
 
 // Global variables --->
 export let customGroupsList = [];
-export let tasksList = [new Task("Call Mum", "Make a call to Mum telling her about stuff.", "2022-11-03", "School"), new Task("Buy protein powder", "Buy the 500g Nestle protein powder that's on a discount.", "2022-11-04", "Grocery")];
+export let tasksList = [new Task("Call Mum", "Make a call to Mum telling her about stuff.", "2022-11-03", "School"), new Task("Buy protein powder", "Buy the 500g Nestle protein powder that's on a discount.", "2022-11-04", "Grocery"), new Task("Drink a glass of water", "Hydration is important!", "2022-11-27"), new Task("Play video games", "Time for some fun!", "2022-11-04")];
+let activeGroup = "Inbox";
 
 // Functions --->
 export function buildCustomGroupItem(customGroupItem) {  
@@ -164,7 +165,90 @@ export function removeGroup(customGroupIndex) {
     customGroupsList.splice(customGroupIndex, 1);
 }
 
+function buildTasks(tasks) {
+    // TODO
+}
+
+function buildTaskContents(groupName) {
+    let taskSectionElement = document.querySelector(".task-section");
+        
+    // For each due date group, build a task content
+    // Initialize map values with an empty list
+    let datesMap = new Map();
+    tasksList.forEach((task) => {
+        // If the group is "Inbox", then show all tasks
+        if (groupName !== "Inbox") {
+            // Skip this task if it is not in the group
+            if (task.groupName !== groupName) {
+                return;
+            }
+        }
+        
+        // Save each date string as a key and the list of tasks as it's value
+        let dueDateString = task.dueDateString;
+        
+        // If date is before today, add date to 'Overdue' key
+        let dueDate = new Date(dueDateString);
+        if (dueDate.getDate() < new Date(Date.now()).getDate()) {
+            dueDateString = "Overdue";
+        }
+        
+        if (datesMap.has(dueDateString)) {
+            datesMap.get(dueDateString).push(task);
+        }
+        else {
+            datesMap.set(dueDateString, [task]);
+        }
+    });
+    
+    console.log("Dates Map:", datesMap);
+    
+    datesMap.forEach((value, key) => {
+        let dateString = "Overdue";
+        if (key !== "Overdue") {
+            let date = new Date(key);
+            dateString = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric'});
+            if (new Date(Date.now()).getDate() === date.getDate()) {
+                dateString = "Today - " + dateString;
+            }
+        }
+        
+        let taskContentElement = document.createElement("div");  // add to task section
+        taskContentElement.classList.add("task-content");
+        taskSectionElement.appendChild(taskContentElement);
+        
+        let dateHeaderElement = document.createElement("h3");  // add to task content
+        dateHeaderElement.classList.add("date-header");
+        dateHeaderElement.textContent = dateString;
+        taskContentElement.appendChild(dateHeaderElement);
+        
+        buildTasks(value);
+        
+        let buttonElement = document.createElement("button");  // add to task content
+        buttonElement.textContent = "Add a new task";
+        taskContentElement.appendChild(buttonElement);
+    });
+}
+
+function buildMain(groupName) {
+    let bodyElement = document.querySelector("body");
+    
+    let mainElement = document.createElement("main");  // add to body
+    bodyElement.appendChild(mainElement);
+    
+    let currentGroupNameElement = document.createElement("h2");  // add to main
+    currentGroupNameElement.id = "current-group-name";
+    currentGroupNameElement.textContent = groupName;
+    
+    let taskSectionElement = document.createElement("div");  // add to main
+    taskSectionElement.classList.add("task-section");
+    mainElement.appendChild(taskSectionElement);
+    
+    buildTaskContents(groupName);
+}
+
 // Main --->
 buildNavBar();
+buildMain("Inbox");
 
 addEventListeners();
