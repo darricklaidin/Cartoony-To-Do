@@ -14,7 +14,11 @@ html {
 body {
     width: 100vw;
     min-height: 100vh;
+    
+    display: flex;
 }
+
+/* Nav bar */
 
 nav {
     width: 300px;
@@ -71,9 +75,6 @@ nav img:hover {
 .groups-heading-buttons {
     display: flex;
     gap: 20px;
-}
-
-#down-arrow-button {
 }
 
 #down-arrow-button.collapsed{
@@ -151,3 +152,78 @@ nav img:hover {
 	border: none;
     border-radius: 50%;
 }
+
+/* Tasks */
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    
+    height: 100vh;
+}
+
+main h2 {
+    font-size: 3rem;
+}
+
+.task-section {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    
+    
+    overflow-y: auto;
+}
+
+.task-content {
+    border: 1px solid lightgreen;
+    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.task-content h3 {
+    width: 100%;
+}
+
+.task-content button {
+    font-family: inherit;
+    
+    cursor: pointer;
+}
+
+.tasks {
+    border: 1px solid coral;
+    
+    width: 100%;
+    
+    padding: 10px;
+}
+
+.task {
+    display: flex;
+    gap: 25px;
+    
+    border: 1px solid blue;
+    
+    padding: 5px;
+    
+    cursor: pointer;
+}
+
+.task:hover {
+    background-color: rgba(0, 118, 182, 0.473);
+}
+
+.task input {
+    cursor: pointer;
+}
+
+.group-tag {
+    background-color: yellow;
+    border-radius: 5px;
+}
+
