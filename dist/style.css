@@ -201,12 +201,18 @@ main h2 {
     font-family: inherit;
     
     padding: 5px;
+    margin: 0 0 0 10px;
+    
+    width: 200px;
     
     cursor: pointer;
 }
 
 .tasks {
     /* border: 1px solid coral; */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     
     width: 100%;
     
@@ -218,8 +224,6 @@ main h2 {
     gap: 25px;
     
     /* border: 1px solid blue; */
-    
-    padding: 5px;
     
     cursor: pointer;
 }
