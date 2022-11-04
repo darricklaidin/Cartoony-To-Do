@@ -179,8 +179,31 @@ main {
     
 }
 
-main h2 {
+.heading {
+    display: flex;
+    gap: 50px;
+}
+
+.heading h2 {
     font-size: 2.5rem;
+    display: inline-block;
+}
+
+.heading img {
+    background-color: #0076b6d5;
+    
+    border-radius: 50%;
+    
+    padding: 10px;
+    
+    width: 50px;
+    
+    cursor: pointer;
+}
+
+.heading img:hover {
+    background-color: #0076b6;
+    transform: scale(1.1);
 }
 
 .task-section {
@@ -241,9 +264,9 @@ main h2 {
     border-radius: 5px;
 }
 
-/* Edit Task Modal */
+/* Edit/Add Task Modal */
 
-.edit-task-modal {
+.edit-task-modal, .add-task-modal {
     display: none;
     flex: 1;
     
@@ -261,13 +284,13 @@ main h2 {
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-.edit-task-modal * {
+.edit-task-modal *, .add-task-modal * {
     font-family: "Jua", sans-serif;
     font-size: 1.2rem;
     
 }
 
-.edit-task-modal form {
+.edit-task-modal form, .add-task-modal form {
     background-color: white;
     
     border-radius: 20px;
@@ -281,7 +304,7 @@ main h2 {
     gap: 50px;
 }
 
-.edit-task-modal-content {
+.edit-task-modal-content, .add-task-modal-content {
     display: flex;
     flex-direction: column;
     gap: 10px;
@@ -361,7 +384,7 @@ main h2 {
     transform: scale(1.1);
 }
 
-.edit-task-modal-buttons {
+.edit-task-modal-buttons, .add-task-modal-buttons {
     display: flex;
     justify-content: center;
     gap: 50px;
