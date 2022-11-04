@@ -20,10 +20,11 @@ export class Task {
 }
 
 // Global variables --->
-export let customGroupsList = [];
+export let customGroupsList = localStorage.getItem("customGroupsList") ? JSON.parse(localStorage.getItem("customGroupsList")) : [];
+
 // export let tasksList = [new Task(1, "Call Mum", "Make a call to Mum telling her about stuff.", "2022-11-04", "School"), new Task(2, "Buy protein powder", "Buy the 500g Nestle protein powder that's on a discount.", "2022-11-03", "Grocery"), new Task(3, "Drink a glass of water", "Hydration is important!", "2022-11-27"), new Task(4, "Play video games", "Time for some fun!", "2022-11-04")];
 
-export let tasksList = [];
+export let tasksList = localStorage.getItem("tasksList") ? JSON.parse(localStorage.getItem("tasksList")) : [];
 export let activeGroupName = "Inbox";
 
 // Functions --->
@@ -59,6 +60,8 @@ export function addNewGroup() {
     
     // Focus on new group
     groupsElement.lastChild.firstChild.focus();
+    
+    localStorage.setItem("customGroupsList", JSON.stringify(customGroupsList));
 }
 
 export function removeGroup(customGroupIndex) {
@@ -74,6 +77,8 @@ export function removeGroup(customGroupIndex) {
     groupsElement.removeChild(groupsElement.children[customGroupIndex + 1]);  // to ignore the 'Inbox' group which is default
     // Remove from customGroupsList
     customGroupsList.splice(customGroupIndex, 1);
+    
+    localStorage.setItem("customGroupsList", JSON.stringify(customGroupsList));
 }
 
 export function removeMain() {
@@ -98,6 +103,8 @@ export function removeTask(event) {
     
     // Delete completed task from DOM
     event.target.parentElement.remove();
+    
+    localStorage.setItem("tasksList", JSON.stringify(tasksList));
 }
 
 export function disableNav() {
